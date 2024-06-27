@@ -15,7 +15,7 @@ function CategoriesAndProducts() {
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);
-        setFilteredProducts(data); // Initially display all products
+        setFilteredProducts(data); 
       })
       .catch((error) => console.error('Error fetching products:', error));
   }, []);
