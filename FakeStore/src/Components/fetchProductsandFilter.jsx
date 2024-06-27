@@ -4,6 +4,7 @@ function CategoriesAndProducts() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products/categories')
@@ -28,6 +29,9 @@ function CategoriesAndProducts() {
       setFilteredProducts(filtered);
     }
   };
+  const handleProductClick = (product) => {
+    setSelectedProduct(product.id === selectedProduct?.id ? null : product);
+  };
 
   return (
     <div>
@@ -50,7 +54,11 @@ function CategoriesAndProducts() {
       </div>
       <div className="grid grid-cols-4 gap-4 p-4">
         {filteredProducts.map((product) => (
-          <div key={product.id} className="max-w-sm rounded overflow-hidden shadow-lg p-4">
+          <div
+            key={product.id}
+            className={`max-w-sm rounded overflow-hidden shadow-lg p-4 ${selectedProduct?.id === product.id ? 'scale-125' : ''}`}
+            onClick={() => handleProductClick(product)}
+          >
             <img className="w-full" src={product.image} alt={product.title} />
             <div className="px-6 py-4">
               <div className="font-bold text-xl mb-2">{product.title}</div>
@@ -60,6 +68,11 @@ function CategoriesAndProducts() {
               <p className="text-gray-700 text-base">
                 Rating: {product.rating.rate} ({product.rating.count} reviews)
               </p>
+              {selectedProduct?.id === product.id && (
+                <p className="text-gray-700 text-base">
+                  Description: {product.description}
+                </p>
+              )}
             </div>
           </div>
         ))}
